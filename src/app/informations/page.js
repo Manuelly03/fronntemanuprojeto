@@ -1,4 +1,4 @@
-export default function Resources() {
+export default function Informations() {
   return (
     <div className="mt-20 ml-10 w-[400px]">
       <h1 className="text-2xl font-bold mb-2">Informações</h1>

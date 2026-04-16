@@ -12,10 +12,8 @@ export function TopbarMenu() {
            <div className="flex gap-6 text-sm">
 
     
-          
-            <Link href="/resources">Informações</Link>
-              <Link href="/Plans">Saiba Mais</Link>
-           </div>
+            <Link href="/informations">Informações</Link>
+            <Link href="/about">Saiba Mais</Link></div>
 
            <div className="flex gap-7.5">
             <Link href="login">
