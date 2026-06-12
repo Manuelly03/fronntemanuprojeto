@@ -1,7 +1,7 @@
-import { Geist, Geist_Mono, Inter} from "next/font/google";
-import "./globals.css";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
+import "../globals.css";
+import TopbarMenu from "@/components/ui/topbar-menu";
 import { cn } from "@/lib/utils";
-import { TopbarMenu } from "@/components/ui/topbar-menu";
 
 const inter = Inter ({
   variable: "--font-sans",

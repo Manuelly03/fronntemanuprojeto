@@ -1,32 +1,48 @@
+"use client";
 import Link from "next/link";
-import { Button } from "./button";
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 
-export function TopbarMenu() {
-    return (
-        <header className="flex items-center gap-9 h-20 w-260 m-auto" >
-           <Link href="/">
-            <h1 className="text-5xl font-extrabold">Notas</h1>
-            </Link>
-            <nav className="flex justify-between items-center w-full">
+export default function TopbarMenu() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
-           <div className="flex gap-6 text-sm">
+  const handleToggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
-    
-            <Link href="/informations">Informações</Link>
-            <Link href="/about">Saiba Mais</Link></div>
+  return (
+    <header className="sticky top-0 z-50 flex items-center gap-9 h-20">
+      <h1 className="text-5xl font-extrabold">
+        <Link href="/"> Anotando Filmes</Link>
+      </h1>
 
-           <div className="flex gap-7.5">
-            <Link href="login">
-            <Button variant="outline">Login</Button>
-            </Link>
+      <nav className="flex justify-between items-center w-full">
+        <div className="hidden sm:flex gap-6 text-sm">
+          <Link href="/plans"> Informações </Link>
+          <Link href="/resources"> Saiba Mais</Link>
+        </div>
 
-            <Link href="cadastro">
-             <Button>Cadastre-se</Button>
-             </Link>
+        <div className="flex gap-7.5">
+          <Link
+            className="flex items-center border px-2.5 rounded-md text-sm"
+            href="/login"
+          >
+            Login
+          </Link>
 
+          <Link
+            className="flex items-center bg-primary text-primary-foreground px-2.5 rounded-md text-sm"
+            href="/register"
+          >
+            Cadastre-se
+          </Link>
 
-           </div>
-            </nav>
-        </header>
-    )
-} 
+          <button onClick={handleToggleTheme}>
+            {isDark ? <Sun /> : <Moon />}
+          </button>
+        </div>
+      </nav>
+    </header>
+  );
+}

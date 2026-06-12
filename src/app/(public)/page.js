@@ -1,4 +1,4 @@
-import { genres } from "@/data/movies";
+import { genres } from "./data/movies.js";
 import { MovieCard } from "@/components/ui/movie-card";
 
 export default function Home() {
