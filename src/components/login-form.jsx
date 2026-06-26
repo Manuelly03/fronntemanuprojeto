@@ -31,7 +31,8 @@ export default function LoginForm() {
     setLoading(false);
 
     if (error) {
-      setError("Email ou senha inválidos.");
+      // Mostra a mensagem real do servidor em vez de uma genérica
+      setError(error.message || "Erro ao criar conta. Verifique os dados e tente novamente.");
       return;
     }
 

@@ -1,4 +1,4 @@
-// frontend\src\middleware.js
+// frontend\src\proxy.js
 import { NextResponse } from "next/server";
 
 // Lista de rotas que precisam de login
@@ -7,7 +7,7 @@ const rotasPrivadas = ["/dashboard", "/links"];
 // Lista de rotas que NÃO devem ser acessadas se já estiver logado
 const rotasDeAuth = ["/login", "/register"];
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Verifica a sessão perguntando ao backend

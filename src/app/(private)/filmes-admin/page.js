@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "../../../components/ui/button";
+import { Skeleton } from "../../../components/ui/skeleton";
 import { Plus } from "lucide-react";
-import CardFilmeAdmin from "@/components/card-filme-admin";
-import FilmeForm from "@/components/filme-form";
+import CardFilmeAdmin from "../../../components/card-filmes-admin";
+import FilmeForm from "../../../components/filmes-form";
 
-const API = "http://localhost:5500/api/filmes";
+const API = "http://localhost:5500/api/movies/filmes";
 
 export default function FilmesAdmin() {
   const [filmes, setFilmes] = useState([]);
@@ -32,9 +32,11 @@ export default function FilmesAdmin() {
 
   async function fetchFilmes() {
     setLoading(true);
-    const res = await fetch(API);
+    const res = await fetch(API, {
+      credentials: "include", // ← adiciona isso
+    });
     const data = await res.json();
-    setFilmes(data);
+    setFilmes(Array.isArray(data) ? data : []); // ← proteção contra erro
     setLoading(false);
   }
 

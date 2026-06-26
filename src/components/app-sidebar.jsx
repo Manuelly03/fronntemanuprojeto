@@ -1,7 +1,6 @@
-// src/components/app-sidebar.jsx
 "use client";
 
-import { Link,  Video  } from "lucide-react";
+import { ChartBar, LayoutDashboard, Link, Link2 } from "lucide-react";
 
 import {
   Sidebar,
@@ -14,23 +13,44 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
+import { authClient } from "@/lib/auth-client";
 
 const data = {
-  user: {
-    name: "Manu",
-    email: "manu@email.com",
-    avatar: "",
-  },
   navMain: [
     {
-      title: "Avaliação de Filmes",
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Links",
+      url: "/links",
+      icon: Link2,
+    },
+    {
+      title: "Analytics",
+      url: "/analytics",
+      icon: ChartBar,
+    },
+    {
+      title: "Filmes",
       url: "/filmes-admin",
-      icon:  Video ,
-    }
+      icon: null,
+    },
   ],
 };
 
 export function AppSidebar({ ...props }) {
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user
+    ? {
+        name: session.user.name ?? "Usuário",
+        email: session.user.email ?? "",
+        image:
+          session.user.image ??
+          `https://api.dicebear.com/10.x/adventurer-neutral/svg?seed=${session.user.name}`,
+      }
+    : null;
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -42,7 +62,7 @@ export function AppSidebar({ ...props }) {
             >
               <a href="#">
                 <Link className="size-5!" />
-                <span className="text-base font-semibold">Notas de Filmes</span>
+                <span className="text-base font-semibold">minURL</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -52,7 +72,7 @@ export function AppSidebar({ ...props }) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {!isPending && user && <NavUser user={user} />}
       </SidebarFooter>
     </Sidebar>
   );
