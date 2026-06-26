@@ -1,5 +1,4 @@
-// frontend\src\components\login-form.jsx
-"use client"; // ← torna o componente interativo no browser
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -10,7 +9,6 @@ import { Input } from "./ui/input";
 import { authClient } from "@/lib/auth-client";
 
 export default function LoginForm() {
-  // Estado dos campos
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,40 +17,40 @@ export default function LoginForm() {
   const router = useRouter();
 
   async function handleSubmit(e) {
-    e.preventDefault(); // impede o comportamento padrão do form (reload da página)
+    e.preventDefault();
     setError("");
     setLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
-      email,
-      password,
-    });
+    const { data, error } = await authClient.signIn.email({ email, password });
 
     setLoading(false);
 
     if (error) {
-      // Mostra a mensagem real do servidor em vez de uma genérica
-      setError(error.message || "Erro ao criar conta. Verifique os dados e tente novamente.");
+      setError(error.message || "Email ou senha inválidos.");
       return;
     }
 
-    router.push("/dashboard"); // redireciona após login com sucesso
+    router.push("/dashboard");
   }
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex flex-col items-center gap-1.5 text-center">
+        <div className="flex items-center justify-center size-11 rounded-2xl bg-foreground mb-1">
+          <span className="text-background text-lg font-bold">AF</span>
+        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Bem-vindo de volta</h1>
+        <p className="text-sm text-muted-foreground">
+          Entre na sua conta para continuar
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit}>
         <FieldGroup>
-          <div className="flex flex-col items-center gap-2 text-center mb-10">
-            <h1 className="text-xl font-bold">Bem-vindo ao minURL</h1>
-            <FieldDescription>
-              Não tem uma conta? <Link href="/register">Cadastre-se</Link>
-            </FieldDescription>
-          </div>
-
-          {/* Mensagem de erro */}
           {error && (
-            <p className="text-sm text-red-500 text-center mb-2">{error}</p>
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-3 py-2.5 text-sm text-destructive text-center">
+              {error}
+            </div>
           )}
 
           <Field>
@@ -66,29 +64,38 @@ export default function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </Field>
-          <Field className="mb-8">
+          <Field className="mb-2">
             <FieldLabel htmlFor="password">Senha</FieldLabel>
             <Input
               id="password"
               type="password"
-              placeholder="Digite sua senha aqui"
+              placeholder="Digite sua senha"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Field>
           <Field>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Entrando..." : "Login"}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
           </Field>
         </FieldGroup>
       </form>
-      <FieldDescription className="px-6 text-center">
-        Ao clicar em continuar, você concorda com nossos{" "}
-        <a href="#">Termos de Serviços</a> e{" "}
-        <a href="#">Política de Privacidade</a>.
-      </FieldDescription>
+
+      <p className="text-center text-sm text-muted-foreground">
+        Não tem uma conta?{" "}
+        <Link href="/register" className="text-foreground font-medium underline underline-offset-4">
+          Cadastre-se
+        </Link>
+      </p>
+
+      <p className="text-xs text-center text-muted-foreground px-4">
+        Ao entrar, você concorda com nossos{" "}
+        <a href="#" className="underline underline-offset-2">Termos de Serviço</a>{" "}
+        e{" "}
+        <a href="#" className="underline underline-offset-2">Política de Privacidade</a>.
+      </p>
     </div>
   );
 }

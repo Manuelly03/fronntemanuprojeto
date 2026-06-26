@@ -1,4 +1,3 @@
-// frontend\src\components\register-form.jsx
 "use client";
 
 import Link from "next/link";
@@ -23,7 +22,6 @@ export default function RegisterForm() {
     e.preventDefault();
     setError("");
 
-    // Validação no cliente — antes de ir ao servidor
     if (password.length < 8) {
       setError("A senha deve ter pelo menos 8 caracteres.");
       return;
@@ -35,16 +33,12 @@ export default function RegisterForm() {
 
     setLoading(true);
 
-    const { data, error } = await authClient.signUp.email({
-      name,
-      email,
-      password,
-    });
+    const { data, error } = await authClient.signUp.email({ name, email, password });
 
     setLoading(false);
 
     if (error) {
-      setError("Erro ao criar conta. Verifique os dados e tente novamente.");
+      setError(error.message || "Erro ao criar conta. Verifique os dados e tente novamente.");
       return;
     }
 
@@ -53,21 +47,26 @@ export default function RegisterForm() {
 
   return (
     <div className="flex flex-col gap-6">
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <FieldGroup>
-          <div className="flex flex-col items-center gap-1 text-center mb-10">
-            <h1 className="text-2xl font-bold">Crie sua conta</h1>
-            <p className="text-sm text-balance text-muted-foreground">
-              Preencha o formulário abaixo para criar sua conta
-            </p>
-          </div>
+      <div className="flex flex-col items-center gap-1.5 text-center">
+        <div className="flex items-center justify-center size-11 rounded-2xl bg-foreground mb-1">
+          <span className="text-background text-lg font-bold">AF</span>
+        </div>
+        <h1 className="text-2xl font-semibold tracking-tight">Crie sua conta</h1>
+        <p className="text-sm text-muted-foreground">
+          Preencha os dados abaixo para começar
+        </p>
+      </div>
 
+      <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
+        <FieldGroup>
           {error && (
-            <p className="text-sm text-red-500 text-center mb-2">{error}</p>
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-3 py-2.5 text-sm text-destructive text-center">
+              {error}
+            </div>
           )}
 
           <Field>
-            <FieldLabel htmlFor="name">Nome Completo</FieldLabel>
+            <FieldLabel htmlFor="name">Nome completo</FieldLabel>
             <Input
               id="name"
               type="text"
@@ -97,12 +96,10 @@ export default function RegisterForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FieldDescription>
-              Deve ter pelo menos 8 caracteres.
-            </FieldDescription>
+            <FieldDescription>Mínimo de 8 caracteres.</FieldDescription>
           </Field>
           <Field>
-            <FieldLabel htmlFor="confirm-password">Confirmar Senha</FieldLabel>
+            <FieldLabel htmlFor="confirm-password">Confirmar senha</FieldLabel>
             <Input
               id="confirm-password"
               type="password"
@@ -111,18 +108,20 @@ export default function RegisterForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Field>
-          <Field className="mt-10">
-            <Button type="submit" disabled={loading}>
-              {loading ? "Criando conta..." : "Criar Conta"}
+          <Field className="mt-4">
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Criando conta..." : "Criar conta"}
             </Button>
-          </Field>
-          <Field>
-            <FieldDescription className="px-6 text-center">
-              Já tem uma conta? <Link href="/login">Login</Link>
-            </FieldDescription>
           </Field>
         </FieldGroup>
       </form>
+
+      <p className="text-center text-sm text-muted-foreground">
+        Já tem uma conta?{" "}
+        <Link href="/login" className="text-foreground font-medium underline underline-offset-4">
+          Entrar
+        </Link>
+      </p>
     </div>
   );
 }

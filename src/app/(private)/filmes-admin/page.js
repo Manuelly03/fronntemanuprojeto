@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "../../../components/ui/button";
 import { Skeleton } from "../../../components/ui/skeleton";
-import { Plus } from "lucide-react";
+import { Plus, Film } from "lucide-react";
 import CardFilmeAdmin from "../../../components/card-filmes-admin";
 import FilmeForm from "../../../components/filmes-form";
 
@@ -32,22 +32,15 @@ export default function FilmesAdmin() {
 
   async function fetchFilmes() {
     setLoading(true);
-    const res = await fetch(API, {
-      credentials: "include", // ← adiciona isso
-    });
+    const res = await fetch(API, { credentials: "include" });
     const data = await res.json();
-    setFilmes(Array.isArray(data) ? data : []); // ← proteção contra erro
+    setFilmes(Array.isArray(data) ? data : []);
     setLoading(false);
   }
 
   function openCreate() {
     setEditing(null);
-    setForm({
-      title: "",
-      genre: "",
-      image: "",
-      description: "",
-    });
+    setForm({ title: "", genre: "", image: "", description: "" });
     setError("");
     setSheetOpen(true);
   }
@@ -96,35 +89,50 @@ export default function FilmesAdmin() {
   }
 
   async function handleDelete(id) {
-    await fetch(`${API}/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    await fetch(`${API}/${id}`, { method: "DELETE", credentials: "include" });
     setConfirmDelete(null);
     fetchFilmes();
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8 max-w-5xl mx-auto py-2">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Filmes</h1>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Meus Filmes</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {filmes.length > 0
+              ? `${filmes.length} filme${filmes.length !== 1 ? "s" : ""} cadastrado${filmes.length !== 1 ? "s" : ""}`
+              : "Nenhum filme cadastrado ainda"}
+          </p>
+        </div>
 
-        <Button onClick={openCreate}>
-          <Plus className="size-4 mr-2" />
-          Novo Filme
+        <Button onClick={openCreate} className="gap-2">
+          <Plus className="size-4" />
+          Novo filme
         </Button>
       </div>
 
       {loading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-48 rounded-xl" />
+            <Skeleton key={i} className="h-72 rounded-2xl" />
           ))}
         </div>
       ) : filmes.length === 0 ? (
-        <p className="text-muted-foreground text-sm">
-          Nenhum filme cadastrado ainda.
-        </p>
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 gap-4 text-center">
+          <div className="rounded-full bg-muted p-4">
+            <Film className="size-7 text-muted-foreground" />
+          </div>
+          <div>
+            <p className="font-medium text-sm">Adicione seu primeiro filme</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Clique em "Novo filme" para começar sua lista.
+            </p>
+          </div>
+          <Button onClick={openCreate} variant="outline" size="sm" className="gap-2">
+            <Plus className="size-4" /> Novo filme
+          </Button>
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filmes.map((filme) => (
