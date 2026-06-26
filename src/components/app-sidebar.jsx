@@ -62,7 +62,7 @@ export function AppSidebar({ ...props }) {
             >
               <a href="#">
                 <Link className="size-5!" />
-                <span className="text-base font-semibold">minURL</span>
+                <span className="text-base font-semibold">Filmes</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
