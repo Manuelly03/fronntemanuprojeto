@@ -1,7 +1,7 @@
 // src/components/app-sidebar.jsx
 "use client";
 
-import { ChartBar, LayoutDashboard, Link, Link2 } from "lucide-react";
+import { Link,  Video  } from "lucide-react";
 
 import {
   Sidebar,
@@ -23,20 +23,10 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "Links",
-      url: "/links",
-      icon: Link2,
-    },
-    {
-      title: "Analytics",
-      url: "/analytics",
-      icon: ChartBar,
-    },
+      title: "Avaliação de Filmes",
+      url: "/filmes-admin",
+      icon:  Video ,
+    }
   ],
 };
 
@@ -52,7 +42,7 @@ export function AppSidebar({ ...props }) {
             >
               <a href="#">
                 <Link className="size-5!" />
-                <span className="text-base font-semibold">minURL</span>
+                <span className="text-base font-semibold">Notas de Filmes</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

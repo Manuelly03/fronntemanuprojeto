@@ -19,8 +19,8 @@ export default function TopbarMenu() {
 
       <nav className="flex justify-between items-center w-full">
         <div className="hidden sm:flex gap-6 text-sm">
-          <Link href="/plans"> Informações </Link>
-          <Link href="/resources"> Saiba Mais</Link>
+          <Link href="/informations"> Informações </Link>
+          <Link href="/about"> Saiba Mais</Link>
         </div>
 
         <div className="flex gap-7.5">
